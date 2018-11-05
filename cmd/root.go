@@ -9,7 +9,18 @@ import (
 )
 
 var cfgFile string
-var addonURL string
+var appSlug string
+var apiToken string
+var plan string
+var withRetry bool
+
+const colorRed = "\x1b[31;1m"
+const colorNeutral = "\x1b[0m"
+
+func fail(err error) {
+	fmt.Printf("\n%s%s%s\n", colorRed, err, colorNeutral)
+	os.Exit(1)
+}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -37,12 +48,11 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	fmt.Println(addonURL)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./config.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file to use (default is ./config.yaml)")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
@@ -66,17 +76,19 @@ func initConfig() {
 		fmt.Println("Reading config file:", viper.ConfigFileUsed())
 	}
 
+	// TODO: error if config file not found
 	validateConfig()
 }
 
 func validateConfig() {
 	requiredConfigs := []string{"addon-url", "auth-token", "sso-secret"}
 
+	fmt.Println("\nConfigs:")
 	for _, config := range requiredConfigs {
 		if !viper.IsSet(config) {
 			fmt.Printf("Config %s is required but not set\n", config)
 			os.Exit(1)
 		}
-		fmt.Printf("Using config %s: %s\n", config, viper.Get(config))
+		fmt.Printf("%s: %s\n", config, viper.Get(config))
 	}
 }
