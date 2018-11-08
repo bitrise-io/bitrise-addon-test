@@ -7,7 +7,6 @@ import (
 
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
-	"github.com/spf13/viper"
 )
 
 // Config ...
@@ -74,9 +73,9 @@ func (c *Tester) Provision(params ProvisionParams) error {
 
 	client, _ := addonprovisioner.NewClient(
 		&addonprovisioner.ClientConfig{
-			AddonURL:  viper.Get("addon-url").(string),
-			AuthToken: viper.Get("auth-token").(string),
-			SSOSecret: viper.Get("sso-secret").(string),
+			AddonURL:  c.addonURL,
+			AuthToken: c.authToken,
+			SSOSecret: c.ssoSecret,
 		})
 
 	status, body, err := client.Provision(addonprovisioner.ProvisionParams{
@@ -89,8 +88,8 @@ func (c *Tester) Provision(params ProvisionParams) error {
 		return fmt.Errorf("Provisioning failed: %s", err)
 	}
 
-	c.logger.Printf("Response status: %d", status)
-	c.logger.Printf("Response body: %v", body)
+	c.logger.Printf("\nResponse status: %d", status)
+	c.logger.Printf("Response body: %v\n", body)
 
 	if status < 200 || status > 299 {
 		return fmt.Errorf("Provisioning request resulted in a non-2xx response")
@@ -118,7 +117,7 @@ func (c *Tester) Provision(params ProvisionParams) error {
 		c.logger.Printf("No ENV vars to check in response")
 	}
 
-	c.logger.Println("Provisioning success.")
+	c.logger.Println("\nProvisioning success.")
 
 	return nil
 	//TODO: retry logic, sending with wrong header

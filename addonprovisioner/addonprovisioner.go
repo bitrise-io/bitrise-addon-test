@@ -107,7 +107,7 @@ func (c *Client) Provision(params ProvisionParams) (int, string, error) {
 		log.Errorf("Failed to read response body: %s", err)
 		os.Exit(1)
 	}
-	_ = string(bodyBytes)
+	bodyString := string(bodyBytes)
 
-	return resp.StatusCode, "bodyString", nil
+	return resp.StatusCode, bodyString, nil
 }
