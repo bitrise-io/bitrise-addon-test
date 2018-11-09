@@ -33,6 +33,14 @@ type Client struct {
 	ssoSecret string
 }
 
+// AddonClientInterface ...
+type AddonClientInterface interface {
+	AddonURL() string
+	AuthToken() string
+	SSOSecret() string
+	Provision(params ProvisionParams) (int, string, error)
+}
+
 func (c *Client) validate() error {
 	if c.client == nil {
 		c.client = &http.Client{}
@@ -63,6 +71,21 @@ func NewClient(config *ClientConfig) (*Client, error) {
 	}
 
 	return &client, nil
+}
+
+// AddonURL ...
+func (c Client) AddonURL() string {
+	return c.addonURL
+}
+
+// AuthToken ...
+func (c Client) AuthToken() string {
+	return c.authToken
+}
+
+// SSOSecret ...
+func (c Client) SSOSecret() string {
+	return c.ssoSecret
 }
 
 func (c *Client) doRequest(method, path string, payload interface{}) (*http.Response, error) {

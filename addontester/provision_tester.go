@@ -1,41 +1,12 @@
-package addonprovisiontester
+package addontester
 
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
 )
-
-// Config ...
-type Config struct {
-	Logger    *log.Logger
-	AddonURL  string
-	AuthToken string
-	SSOSecret string
-}
-
-// Tester ...
-type Tester struct {
-	logger    *log.Logger
-	addonURL  string
-	authToken string
-	ssoSecret string
-}
-
-// New ...
-func New(config *Config) (*Tester, error) {
-	client := Tester{
-		logger:    config.Logger,
-		addonURL:  config.AddonURL,
-		authToken: config.AuthToken,
-		ssoSecret: config.SSOSecret,
-	}
-
-	return &client, nil
-}
 
 // ProvisionParams ...
 type ProvisionParams struct {
@@ -71,14 +42,7 @@ func (c *Tester) Provision(params ProvisionParams) error {
 	c.logger.Printf("Plan: %s", params.Plan)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
 
-	client, _ := addonprovisioner.NewClient(
-		&addonprovisioner.ClientConfig{
-			AddonURL:  c.addonURL,
-			AuthToken: c.authToken,
-			SSOSecret: c.ssoSecret,
-		})
-
-	status, body, err := client.Provision(addonprovisioner.ProvisionParams{
+	status, body, err := c.addonClient.Provision(addonprovisioner.ProvisionParams{
 		AppSlug:  params.AppSlug,
 		APIToken: params.APIToken,
 		Plan:     params.Plan,
