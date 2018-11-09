@@ -1,0 +1,14 @@
+format_version: "5"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: other
+workflows:
+  create-binary:
+    steps:
+    - script@1.1.5:
+        title: Create binary
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            go build -o ./_bin/addon-testing-kit
