@@ -1,0 +1,3 @@
+addon-url: "http://localhost:3000"
+auth-token: "abc123"
+sso-secret: "cba321"
