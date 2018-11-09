@@ -12,7 +12,7 @@ import (
 	"os"
 
 	"github.com/bitrise-io/go-utils/log"
-	"github.com/bitrise-team/bitrise-api/utils"
+	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
 	"github.com/moul/http2curl"
 	"github.com/pkg/errors"
 )
