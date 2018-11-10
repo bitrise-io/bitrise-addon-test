@@ -70,7 +70,7 @@ func Test_Provision(t *testing.T) {
 				log.New(&buf, "", 0),
 			)
 
-			err := tester.Provision(addontester.ProvisionParams{
+			err := tester.Provision(addontester.ProvisionTesterParams{
 				AppSlug:  "app-slug",
 				APIToken: "api-token",
 				Plan:     "plan",

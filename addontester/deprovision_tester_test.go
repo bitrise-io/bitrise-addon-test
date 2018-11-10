@@ -54,7 +54,7 @@ func Test_Deprovision(t *testing.T) {
 				log.New(&buf, "", 0),
 			)
 
-			err := tester.Deprovision(addontester.DeprovisionParams{AppSlug: "app-slug"})
+			err := tester.Deprovision(addontester.DeprovisionTesterParams{AppSlug: "app-slug"})
 
 			if tc.expectedError == "" {
 				require.NoError(t, err)
@@ -68,7 +68,6 @@ func Test_Deprovision(t *testing.T) {
 				}
 				require.Equal(t, string(expectedTestData), buf.String())
 			}
-			t.FailNow()
 		})
 	}
 }
