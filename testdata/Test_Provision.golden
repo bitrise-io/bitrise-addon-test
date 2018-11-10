@@ -1,0 +1,3 @@
+{
+    "case1":"Provisioning details:\nApp slug: app-slug\nAPI token: api-token\nPlan: plan\nShould retry: false\n\nResponse status: 200\nResponse body: {\"envs\":[{\"key\":\"key1\",\"value\":\"value1\"}]}\nENV var processed succesfully: key1: value1\n\nProvisioning success."
+}

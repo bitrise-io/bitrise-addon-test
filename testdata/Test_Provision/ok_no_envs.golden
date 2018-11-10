@@ -1,0 +1,12 @@
+
+Provisioning details:
+App slug: app-slug
+API token: api-token
+Plan: plan
+Should retry: false
+
+Response status: 200
+Response body: {"envs":[]}
+No ENV vars to check in response
+
+Provisioning success.
