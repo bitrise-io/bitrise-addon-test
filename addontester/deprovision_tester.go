@@ -15,7 +15,6 @@ type DeprovisionParams struct {
 
 // Deprovision ...
 func (c *Tester) Deprovision(params DeprovisionParams) error {
-
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
 	}
