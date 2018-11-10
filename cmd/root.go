@@ -2,17 +2,17 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
+	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
-var appSlug string
-var apiToken string
-var plan string
-var withRetry bool
 
 const colorRed = "\x1b[31;1m"
 const colorNeutral = "\x1b[0m"
@@ -91,4 +91,17 @@ func validateConfig() {
 		}
 		fmt.Printf("%s: %s\n", config, viper.Get(config))
 	}
+}
+
+func addonTesterFromConfig() (*addontester.Tester, error) {
+	addonClient, err := addonprovisioner.NewClient(&addonprovisioner.ClientConfig{
+		AddonURL:  viper.Get("addon-url").(string),
+		AuthToken: viper.Get("auth-token").(string),
+		SSOSecret: viper.Get("sso-secret").(string),
+	})
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return addontester.New(addonClient, log.New(os.Stdout, "", 0))
 }

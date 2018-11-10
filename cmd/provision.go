@@ -1,14 +1,16 @@
 package cmd
 
 import (
-	"log"
-	"os"
-
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+)
+
+var (
+	provisionAppSlug   string
+	provisionAPIToken  string
+	provisionPlan      string
+	provisionWithRetry bool
 )
 
 var provisionCmd = &cobra.Command{
@@ -31,26 +33,21 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(provisionCmd)
 
-	provisionCmd.PersistentFlags().StringVar(&appSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
-	provisionCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "An API token of the app the add-on gets provisioned to. The add-on can behave on behalf of the app using the Bitrise API. It gets randomly generated if not given.")
-	provisionCmd.PersistentFlags().StringVar(&plan, "plan", "free", "The plan of the provisioned add-on.")
-	provisionCmd.PersistentFlags().BoolVarP(&withRetry, "retry", "r", false, "Retry provisioning  to test idempotency")
+	provisionCmd.PersistentFlags().StringVar(&provisionAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
+	provisionCmd.PersistentFlags().StringVar(&provisionAPIToken, "api-token", "", "An API token of the app the add-on gets provisioned to. The add-on can behave on behalf of the app using the Bitrise API. It gets randomly generated if not given.")
+	provisionCmd.PersistentFlags().StringVar(&provisionPlan, "plan", "free", "The plan of the provisioned add-on.")
+	provisionCmd.PersistentFlags().BoolVarP(&provisionWithRetry, "retry", "r", false, "Retry provisioning  to test idempotency")
 }
 
 func provision() error {
-	addonClient, err := addonprovisioner.NewClient(&addonprovisioner.ClientConfig{
-		AddonURL:  viper.Get("addon-url").(string),
-		AuthToken: viper.Get("auth-token").(string),
-		SSOSecret: viper.Get("sso-secret").(string),
-	})
+	tester, err := addonTesterFromConfig()
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	tester, _ := addontester.New(addonClient, log.New(os.Stdout, "", 0))
 
 	return tester.Provision(addontester.ProvisionParams{
-		AppSlug:  appSlug,
-		APIToken: apiToken,
-		Plan:     plan,
+		AppSlug:  provisionAppSlug,
+		APIToken: provisionAPIToken,
+		Plan:     provisionPlan,
 	})
 }
