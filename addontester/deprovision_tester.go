@@ -22,7 +22,7 @@ func (c *Tester) Deprovision(params DeprovisionTesterParams, remainingRetries in
 	c.logger.Printf("App slug: %s", params.AppSlug)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
 	if params.WithRetry {
-		c.logger.Printf("No. of test: %d.", 3-remainingRetries)
+		c.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
 	}
 
 	status, body, err := c.addonClient.Deprovision(params.AppSlug)

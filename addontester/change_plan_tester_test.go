@@ -14,6 +14,11 @@ func Test_ChangePlan(t *testing.T) {
 			testCaseID:         "ok",
 		},
 		{
+			responseStatusCode: http.StatusOK,
+			testCaseID:         "ok_with_retry",
+			testWithRetry:      true,
+		},
+		{
 			responseStatusCode: http.StatusInternalServerError,
 			responseBody:       `{"message":"Internal Server Error"}`,
 			expectedError:      "Plan changing request resulted in a non-2xx response",
@@ -25,8 +30,9 @@ func Test_ChangePlan(t *testing.T) {
 	} {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
 			return tester.ChangePlan(addontester.ChangePlanTesterParams{
-				AppSlug: "app-slug",
-				Plan:    "plan",
+				AppSlug:   "app-slug",
+				Plan:      "plan",
+				WithRetry: tc.testWithRetry,
 			}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)

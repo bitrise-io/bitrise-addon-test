@@ -44,7 +44,8 @@ func changePlan() error {
 	}
 
 	return tester.ChangePlan(addontester.ChangePlanTesterParams{
-		AppSlug: changePlanAppSlug,
-		Plan:    changePlanPlan,
+		AppSlug:   changePlanAppSlug,
+		Plan:      changePlanPlan,
+		WithRetry: changePlanWithRetry,
 	}, numberOfRetries)
 }

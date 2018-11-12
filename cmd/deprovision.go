@@ -42,6 +42,7 @@ func deprovision() error {
 	}
 
 	return tester.Deprovision(addontester.DeprovisionTesterParams{
-		AppSlug: deprovisionAppSlug,
+		AppSlug:   deprovisionAppSlug,
+		WithRetry: deprovisionWithRetry,
 	}, numberOfRetries)
 }
