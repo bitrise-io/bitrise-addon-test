@@ -45,7 +45,7 @@ func provision() error {
 		return errors.WithStack(err)
 	}
 
-	return tester.Provision(addontester.ProvisionParams{
+	return tester.Provision(addontester.ProvisionTesterParams{
 		AppSlug:  provisionAppSlug,
 		APIToken: provisionAPIToken,
 		Plan:     provisionPlan,

@@ -22,9 +22,12 @@ func (p testAddonClient) AuthToken() string {
 func (p testAddonClient) SSOSecret() string {
 	return p.ssoSecret
 }
-func (p testAddonClient) Provision(params addonprovisioner.ProvisionParams) (int, string, error) {
+func (p testAddonClient) Provision(params addonprovisioner.ProvisionRequestParams) (int, string, error) {
 	return p.responseStatusCode, p.responseBody, p.err
 }
-func (p testAddonClient) Deprovision(params addonprovisioner.DeprovisionParams) (int, string, error) {
+func (p testAddonClient) Deprovision(params addonprovisioner.DeprovisionRequestParams) (int, string, error) {
+	return p.responseStatusCode, p.responseBody, p.err
+}
+func (p testAddonClient) ChangePlan(params addonprovisioner.ChangePlanRequestParams, appSlug string) (int, string, error) {
 	return p.responseStatusCode, p.responseBody, p.err
 }

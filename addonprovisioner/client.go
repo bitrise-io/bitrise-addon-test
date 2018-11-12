@@ -34,8 +34,9 @@ type AddonClientInterface interface {
 	AddonURL() string
 	AuthToken() string
 	SSOSecret() string
-	Provision(params ProvisionParams) (int, string, error)
-	Deprovision(params DeprovisionParams) (int, string, error)
+	Provision(params ProvisionRequestParams) (int, string, error)
+	Deprovision(params DeprovisionRequestParams) (int, string, error)
+	ChangePlan(params ChangePlanRequestParams, appSlug string) (int, string, error)
 }
 
 func (c *Client) validate() error {

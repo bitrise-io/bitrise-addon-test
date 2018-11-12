@@ -1,0 +1,10 @@
+
+Plan changing details:
+App slug: app-slug
+Plan: plan
+Should retry: false
+
+Response status: 200
+Response body: 
+
+Plan changing success.

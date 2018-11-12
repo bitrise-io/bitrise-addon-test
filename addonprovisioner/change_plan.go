@@ -1,6 +1,7 @@
 package addonprovisioner
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -9,16 +10,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-// ProvisionRequestParams ...
-type ProvisionRequestParams struct {
-	AppSlug  string `json:"app_slug"`
-	APIToken string `json:"api_token"`
-	Plan     string `json:"plan"`
+// ChangePlanRequestParams ...
+type ChangePlanRequestParams struct {
+	Plan string `json:"plan"`
 }
 
-// Provision ...
-func (c *Client) Provision(params ProvisionRequestParams) (int, string, error) {
-	resp, err := c.doRequest("POST", "/provision", params)
+// ChangePlan ...
+func (c *Client) ChangePlan(params ChangePlanRequestParams, appSlug string) (int, string, error) {
+	resp, err := c.doRequest("PUT", fmt.Sprintf("/provision/%s", appSlug), params)
 	if err != nil {
 		return 0, "", errors.Wrap(err, "Failed to send request")
 	}

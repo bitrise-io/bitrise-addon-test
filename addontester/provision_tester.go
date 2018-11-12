@@ -8,8 +8,8 @@ import (
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
 )
 
-// ProvisionParams ...
-type ProvisionParams struct {
+// ProvisionTesterParams ...
+type ProvisionTesterParams struct {
 	AppSlug   string
 	APIToken  string
 	Plan      string
@@ -26,7 +26,7 @@ type provisionResp struct {
 }
 
 // Provision ...
-func (c *Tester) Provision(params ProvisionParams) error {
+func (c *Tester) Provision(params ProvisionTesterParams) error {
 
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
@@ -42,7 +42,7 @@ func (c *Tester) Provision(params ProvisionParams) error {
 	c.logger.Printf("Plan: %s", params.Plan)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
 
-	status, body, err := c.addonClient.Provision(addonprovisioner.ProvisionParams{
+	status, body, err := c.addonClient.Provision(addonprovisioner.ProvisionRequestParams{
 		AppSlug:  params.AppSlug,
 		APIToken: params.APIToken,
 		Plan:     params.Plan,
