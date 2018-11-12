@@ -9,6 +9,7 @@ import (
 var (
 	loginAppSlug   string
 	loginBuildSlug string
+	loginTimestamp int64
 	loginWithRetry bool
 )
 
@@ -34,6 +35,7 @@ func init() {
 
 	loginCmd.PersistentFlags().StringVar(&loginAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
 	loginCmd.PersistentFlags().StringVar(&loginBuildSlug, "build-slug", "", "The slug of the build")
+	loginCmd.PersistentFlags().Int64Var(&loginTimestamp, "timestamp", 0, "The slug of the build")
 	loginCmd.PersistentFlags().BoolVarP(&loginWithRetry, "retry", "r", false, "Retry provisioning  to test idempotency")
 }
 
@@ -46,6 +48,7 @@ func login() error {
 	return tester.Login(addontester.LoginTesterParams{
 		AppSlug:   loginAppSlug,
 		BuildSlug: loginBuildSlug,
+		Timestamp: loginTimestamp,
 		WithRetry: loginWithRetry,
 	}, numberOfRetries)
 }
