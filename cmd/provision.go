@@ -46,8 +46,9 @@ func provision() error {
 	}
 
 	return tester.Provision(addontester.ProvisionTesterParams{
-		AppSlug:  provisionAppSlug,
-		APIToken: provisionAPIToken,
-		Plan:     provisionPlan,
-	})
+		AppSlug:   provisionAppSlug,
+		APIToken:  provisionAPIToken,
+		Plan:      provisionPlan,
+		WithRetry: provisionWithRetry,
+	}, numberOfRetries)
 }

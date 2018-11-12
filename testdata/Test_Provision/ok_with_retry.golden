@@ -1,0 +1,39 @@
+
+Provisioning details:
+App slug: app-slug
+API token: api-token
+Plan: plan
+Should retry: true
+No. of test: 1.
+
+Response status: 200
+Response body: {"envs":[{"key":"key1","value":"value1"}]}
+ENV var processed succesfully: key1: value1
+
+Provisioning success.
+
+Provisioning details:
+App slug: app-slug
+API token: api-token
+Plan: plan
+Should retry: true
+No. of test: 2.
+
+Response status: 200
+Response body: {"envs":[{"key":"key1","value":"value1"}]}
+ENV var processed succesfully: key1: value1
+
+Provisioning success.
+
+Provisioning details:
+App slug: app-slug
+API token: api-token
+Plan: plan
+Should retry: true
+No. of test: 3.
+
+Response status: 200
+Response body: {"envs":[{"key":"key1","value":"value1"}]}
+ENV var processed succesfully: key1: value1
+
+Provisioning success.

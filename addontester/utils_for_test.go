@@ -18,6 +18,7 @@ type TesterTestCase struct {
 	requestError       string
 	expectedError      string
 	testCaseID         string
+	testWithRetry      bool
 	testerMethodToCall func(tester *addontester.Tester) error
 }
 

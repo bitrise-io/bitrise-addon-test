@@ -27,7 +27,7 @@ func Test_ChangePlan(t *testing.T) {
 			return tester.ChangePlan(addontester.ChangePlanTesterParams{
 				AppSlug: "app-slug",
 				Plan:    "plan",
-			})
+			}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)
 	}

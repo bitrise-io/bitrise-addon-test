@@ -24,7 +24,7 @@ func Test_Deprovision(t *testing.T) {
 		},
 	} {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
-			return tester.Deprovision(addontester.DeprovisionTesterParams{AppSlug: "app-slug"})
+			return tester.Deprovision(addontester.DeprovisionTesterParams{AppSlug: "app-slug"}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)
 	}

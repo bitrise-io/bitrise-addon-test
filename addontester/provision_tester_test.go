@@ -16,6 +16,12 @@ func Test_Provision(t *testing.T) {
 		},
 		{
 			responseStatusCode: http.StatusOK,
+			responseBody:       `{"envs":[{"key":"key1","value":"value1"}]}`,
+			testCaseID:         "ok_with_retry",
+			testWithRetry:      true,
+		},
+		{
+			responseStatusCode: http.StatusOK,
 			responseBody:       `{"envs":[]}`,
 			testCaseID:         "ok_no_envs",
 		},
@@ -41,10 +47,11 @@ func Test_Provision(t *testing.T) {
 	} {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
 			return tester.Provision(addontester.ProvisionTesterParams{
-				AppSlug:  "app-slug",
-				APIToken: "api-token",
-				Plan:     "plan",
-			})
+				AppSlug:   "app-slug",
+				APIToken:  "api-token",
+				Plan:      "plan",
+				WithRetry: tc.testWithRetry,
+			}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)
 	}
