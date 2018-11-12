@@ -25,7 +25,7 @@ func (p testAddonClient) SSOSecret() string {
 func (p testAddonClient) Provision(params addonprovisioner.ProvisionRequestParams) (int, string, error) {
 	return p.responseStatusCode, p.responseBody, p.err
 }
-func (p testAddonClient) Deprovision(params addonprovisioner.DeprovisionRequestParams) (int, string, error) {
+func (p testAddonClient) Deprovision(appSlug string) (int, string, error) {
 	return p.responseStatusCode, p.responseBody, p.err
 }
 func (p testAddonClient) ChangePlan(params addonprovisioner.ChangePlanRequestParams, appSlug string) (int, string, error) {
