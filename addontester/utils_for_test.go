@@ -18,6 +18,7 @@ type TesterTestCase struct {
 	requestError       string
 	expectedError      string
 	testCaseID         string
+	testerMethodToCall func(tester *addontester.Tester) error
 }
 
 func performTesterTest(t *testing.T, tc TesterTestCase) {
@@ -40,11 +41,11 @@ func performTesterTest(t *testing.T, tc TesterTestCase) {
 			log.New(&buf, "", 0),
 		)
 
-		err := tester.Provision(addontester.ProvisionTesterParams{
-			AppSlug:  "app-slug",
-			APIToken: "api-token",
-			Plan:     "plan",
-		})
+		if tc.testerMethodToCall == nil {
+			panic("Specify a func to test")
+		}
+
+		err := tc.testerMethodToCall(tester)
 
 		if tc.expectedError == "" {
 			require.NoError(t, err)

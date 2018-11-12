@@ -3,6 +3,8 @@ package addontester_test
 import (
 	"net/http"
 	"testing"
+
+	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
 )
 
 func Test_Provision(t *testing.T) {
@@ -37,6 +39,13 @@ func Test_Provision(t *testing.T) {
 			expectedError: "Provisioning failed: Some HTTP request issue",
 		},
 	} {
+		tc.testerMethodToCall = func(tester *addontester.Tester) error {
+			return tester.Provision(addontester.ProvisionTesterParams{
+				AppSlug:  "app-slug",
+				APIToken: "api-token",
+				Plan:     "plan",
+			})
+		}
 		performTesterTest(t, tc)
 	}
 }

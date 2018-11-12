@@ -7,15 +7,15 @@ import (
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
 )
 
-// ChangePlanParams ...
-type ChangePlanParams struct {
+// ChangePlanTesterParams ...
+type ChangePlanTesterParams struct {
 	AppSlug   string
 	Plan      string
 	WithRetry bool
 }
 
 // ChangePlan ...
-func (c *Tester) ChangePlan(params ChangePlanParams) error {
+func (c *Tester) ChangePlan(params ChangePlanTesterParams) error {
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
 	}
