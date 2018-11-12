@@ -6,6 +6,8 @@ import (
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 )
 
+const numberOfTestsWithRetry = 3
+
 // Config ...
 type Config struct {
 	Logger    *log.Logger

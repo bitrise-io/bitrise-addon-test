@@ -4,6 +4,8 @@ import (
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 )
 
+const numberOfRetryTests = 2
+
 type testAddonClient struct {
 	addonURL           string
 	authToken          string

@@ -41,5 +41,8 @@ func deprovision() error {
 		return errors.WithStack(err)
 	}
 
-	return tester.Deprovision(addontester.DeprovisionTesterParams{AppSlug: deprovisionAppSlug})
+	return tester.Deprovision(addontester.DeprovisionTesterParams{
+		AppSlug:   deprovisionAppSlug,
+		WithRetry: deprovisionWithRetry,
+	}, numberOfRetries)
 }

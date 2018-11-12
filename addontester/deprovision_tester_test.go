@@ -14,6 +14,11 @@ func Test_Deprovision(t *testing.T) {
 			testCaseID:         "ok",
 		},
 		{
+			responseStatusCode: http.StatusOK,
+			testCaseID:         "ok_with_retry",
+			testWithRetry:      true,
+		},
+		{
 			responseStatusCode: http.StatusInternalServerError,
 			responseBody:       `{"message":"Internal Server Error"}`,
 			expectedError:      "Deprovisioning request resulted in a non-2xx response",
@@ -24,7 +29,10 @@ func Test_Deprovision(t *testing.T) {
 		},
 	} {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
-			return tester.Deprovision(addontester.DeprovisionTesterParams{AppSlug: "app-slug"})
+			return tester.Deprovision(addontester.DeprovisionTesterParams{
+				AppSlug:   "app-slug",
+				WithRetry: tc.testWithRetry,
+			}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)
 	}

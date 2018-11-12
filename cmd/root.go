@@ -14,8 +14,11 @@ import (
 
 var cfgFile string
 
-const colorRed = "\x1b[31;1m"
-const colorNeutral = "\x1b[0m"
+const (
+	colorRed        = "\x1b[31;1m"
+	colorNeutral    = "\x1b[0m"
+	numberOfRetries = 2
+)
 
 func fail(err error) {
 	fmt.Printf("\n%s%s%s\n", colorRed, err, colorNeutral)

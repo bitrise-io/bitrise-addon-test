@@ -1,0 +1,30 @@
+
+Deprovisioning details:
+App slug: app-slug
+Should retry: true
+No. of test: 1.
+
+Response status: 200
+Response body: 
+
+Deprovisioning success.
+
+Deprovisioning details:
+App slug: app-slug
+Should retry: true
+No. of test: 2.
+
+Response status: 200
+Response body: 
+
+Deprovisioning success.
+
+Deprovisioning details:
+App slug: app-slug
+Should retry: true
+No. of test: 3.
+
+Response status: 200
+Response body: 
+
+Deprovisioning success.

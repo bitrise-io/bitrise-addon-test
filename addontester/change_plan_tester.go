@@ -15,7 +15,7 @@ type ChangePlanTesterParams struct {
 }
 
 // ChangePlan ...
-func (c *Tester) ChangePlan(params ChangePlanTesterParams) error {
+func (c *Tester) ChangePlan(params ChangePlanTesterParams, remainingRetries int) error {
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
 	}
@@ -24,6 +24,9 @@ func (c *Tester) ChangePlan(params ChangePlanTesterParams) error {
 	c.logger.Printf("App slug: %s", params.AppSlug)
 	c.logger.Printf("Plan: %s", params.Plan)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
+	if params.WithRetry {
+		c.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
+	}
 
 	status, body, err := c.addonClient.ChangePlan(addonprovisioner.ChangePlanRequestParams{
 		Plan: params.Plan,
@@ -42,6 +45,9 @@ func (c *Tester) ChangePlan(params ChangePlanTesterParams) error {
 
 	c.logger.Println("\nPlan changing success.")
 
+	if params.WithRetry && remainingRetries > 0 {
+		return c.ChangePlan(params, remainingRetries-1)
+	}
+
 	return nil
-	//TODO: retry logic, sending with wrong header
 }

@@ -26,7 +26,7 @@ type provisionResp struct {
 }
 
 // Provision ...
-func (c *Tester) Provision(params ProvisionTesterParams) error {
+func (c *Tester) Provision(params ProvisionTesterParams, remainingRetries int) error {
 
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
@@ -41,6 +41,9 @@ func (c *Tester) Provision(params ProvisionTesterParams) error {
 	c.logger.Printf("API token: %s", params.APIToken)
 	c.logger.Printf("Plan: %s", params.Plan)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
+	if params.WithRetry {
+		c.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
+	}
 
 	status, body, err := c.addonClient.Provision(addonprovisioner.ProvisionRequestParams{
 		AppSlug:  params.AppSlug,
@@ -83,6 +86,9 @@ func (c *Tester) Provision(params ProvisionTesterParams) error {
 
 	c.logger.Println("\nProvisioning success.")
 
+	if params.WithRetry && remainingRetries > 0 {
+		return c.Provision(params, remainingRetries-1)
+	}
+
 	return nil
-	//TODO: retry logic, sending with wrong header
 }
