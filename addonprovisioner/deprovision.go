@@ -10,14 +10,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DeprovisionRequestParams ...
-type DeprovisionRequestParams struct {
-	AppSlug string `json:"app_slug"`
-}
-
 // Deprovision ...
-func (c *Client) Deprovision(params DeprovisionRequestParams) (int, string, error) {
-	resp, err := c.doRequest("DELETE", fmt.Sprintf("/provision/%s", params.AppSlug), nil)
+func (c *Client) Deprovision(appSlug string) (int, string, error) {
+	resp, err := c.doRequest("DELETE", fmt.Sprintf("/provision/%s", appSlug), nil)
 	if err != nil {
 		return 0, "", errors.Wrap(err, "Failed to send request")
 	}

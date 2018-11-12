@@ -3,7 +3,6 @@ package addontester
 import (
 	"fmt"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
 )
 
@@ -23,9 +22,7 @@ func (c *Tester) Deprovision(params DeprovisionTesterParams) error {
 	c.logger.Printf("App slug: %s", params.AppSlug)
 	c.logger.Printf("Should retry: %v", params.WithRetry)
 
-	status, body, err := c.addonClient.Deprovision(addonprovisioner.DeprovisionRequestParams{
-		AppSlug: params.AppSlug,
-	})
+	status, body, err := c.addonClient.Deprovision(params.AppSlug)
 
 	if err != nil {
 		return fmt.Errorf("Deprovisioning failed: %s", err)

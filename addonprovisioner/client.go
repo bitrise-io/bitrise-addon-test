@@ -35,7 +35,7 @@ type AddonClientInterface interface {
 	AuthToken() string
 	SSOSecret() string
 	Provision(params ProvisionRequestParams) (int, string, error)
-	Deprovision(params DeprovisionRequestParams) (int, string, error)
+	Deprovision(appSlug string) (int, string, error)
 	ChangePlan(params ChangePlanRequestParams, appSlug string) (int, string, error)
 }
 
