@@ -1,0 +1,11 @@
+
+Login details:
+App slug: app-slug
+Build slug: build-slug
+Timestamp: 1542292740
+Should retry: false
+
+Response status: 200
+Response body: <html><body><p>Hello Bitrise!</p></body></html>
+
+Login success.

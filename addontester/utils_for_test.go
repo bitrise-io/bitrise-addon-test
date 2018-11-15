@@ -20,6 +20,9 @@ type TesterTestCase struct {
 	testCaseID         string
 	testWithRetry      bool
 	testerMethodToCall func(tester *addontester.Tester) error
+
+	//
+	testTimestamp int64
 }
 
 func performTesterTest(t *testing.T, tc TesterTestCase) {

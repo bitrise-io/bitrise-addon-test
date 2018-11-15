@@ -33,3 +33,6 @@ func (p testAddonClient) Deprovision(appSlug string) (int, string, error) {
 func (p testAddonClient) ChangePlan(params addonprovisioner.ChangePlanRequestParams, appSlug string) (int, string, error) {
 	return p.responseStatusCode, p.responseBody, p.err
 }
+func (p testAddonClient) Login(params addonprovisioner.LoginRequestParams) (int, string, error) {
+	return p.responseStatusCode, p.responseBody, p.err
+}
