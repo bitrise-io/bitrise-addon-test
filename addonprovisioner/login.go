@@ -25,18 +25,19 @@ type LoginRequestParams struct {
 // Login ...
 func (c *Client) Login(params LoginRequestParams) (int, string, error) {
 	s := sha1.New()
-
 	_, err := s.Write([]byte(fmt.Sprintf("%s:%s:%s", params.AppSlug, c.SSOSecret(), params.Timestamp)))
 	if err != nil {
 		log.Errorf("Failed to write into sha1 buffer, error: %s", err)
 		return 0, "", errors.Wrap(err, "Failed to submit form")
 	}
 	refToken := fmt.Sprintf("%x", s.Sum(nil))
-	req, err := http.NewRequest("POST", c.addonURL+fmt.Sprintf("/login?build_slug=%s", params.BuildSlug), strings.NewReader(url.Values{
+
+	formData := strings.NewReader(url.Values{
 		"app_slug":  {params.AppSlug},
 		"token":     {refToken},
 		"timestamp": {params.Timestamp},
-	}.Encode()))
+	}.Encode())
+	req, err := http.NewRequest("POST", c.addonURL+fmt.Sprintf("/login?build_slug=%s", params.BuildSlug), formData)
 	if err != nil {
 		return 0, "", errors.Wrap(err, "Failed to submit form")
 	}
