@@ -28,6 +28,11 @@ func Test_Login(t *testing.T) {
 			expectedError:      "Login request resulted in a non-2xx response",
 		},
 		{
+			responseStatusCode: http.StatusOK,
+			responseBody:       `definately not an HTML`,
+			expectedError:      "Login request responded with invalid HTML",
+		},
+		{
 			requestError:  "Some HTTP request issue",
 			expectedError: "Login failed: Some HTTP request issue",
 		},

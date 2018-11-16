@@ -1,8 +1,12 @@
 package addontester
 
 import (
+	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
+
+	"golang.org/x/net/html"
 
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
 	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
@@ -57,6 +61,17 @@ func (c *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	}
 
 	c.logger.Println("\nLogin success.")
+
+	r := strings.NewReader(body)
+	d := xml.NewDecoder(r)
+	d.Strict = true
+	d.Entity = xml.HTMLEntity
+	var nodes []html.Node
+	err = d.Decode(&nodes)
+
+	if err != nil {
+		return fmt.Errorf("Login request responded with invalid HTML")
+	}
 
 	if params.WithRetry && remainingRetries > 0 {
 		return c.Login(params, remainingRetries-1)
