@@ -11,12 +11,6 @@
   revision = "d1de0dbcb811588e61362aff67bb700b93c13c17"
 
 [[projects]]
-  name = "github.com/bitrise-team/bitrise-api"
-  packages = ["utils"]
-  revision = "8fd36be21d29edac88905228ea922ab11b14a5c2"
-  version = "1.26"
-
-[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
@@ -136,6 +130,15 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = [
+    "html",
+    "html/atom"
+  ]
+  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
@@ -162,6 +165,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c9e80c5adf973577e4bda1ddcb49105f7baac5ab9f00aa358fb5e5fb4bf8fd39"
+  inputs-digest = "cac29937dc38ff9ed6a56fed3065d1133622d9a20d028cc321f968fc4ca82527"
   solver-name = "gps-cdcl"
   solver-version = 1
