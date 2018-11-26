@@ -21,7 +21,7 @@ type LoginTesterParams struct {
 }
 
 // Login ...
-func (c *Tester) Login(params LoginTesterParams, remainingRetries int) error {
+func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
 	}
@@ -34,16 +34,16 @@ func (c *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 		params.Timestamp = time.Now().Unix()
 	}
 
-	c.logger.Printf("\nLogin details:")
-	c.logger.Printf("App slug: %s", params.AppSlug)
-	c.logger.Printf("Build slug: %s", params.BuildSlug)
-	c.logger.Printf("Timestamp: %d", params.Timestamp)
-	c.logger.Printf("Should retry: %v", params.WithRetry)
+	t.logger.Printf("\nLogin details:")
+	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("Build slug: %s", params.BuildSlug)
+	t.logger.Printf("Timestamp: %d", params.Timestamp)
+	t.logger.Printf("Should retry: %v", params.WithRetry)
 	if params.WithRetry {
-		c.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
+		t.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
 	}
 
-	status, body, err := c.addonClient.Login(addonprovisioner.LoginRequestParams{
+	status, body, err := t.addonClient.Login(addonprovisioner.LoginRequestParams{
 		AppSlug:   params.AppSlug,
 		BuildSlug: params.BuildSlug,
 		Timestamp: fmt.Sprintf("%d", params.Timestamp),
@@ -53,14 +53,14 @@ func (c *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 		return fmt.Errorf("Login failed: %s", err)
 	}
 
-	c.logger.Printf("\nResponse status: %d", status)
-	c.logger.Printf("Response body: %v\n", body)
+	t.logger.Printf("\nResponse status: %d", status)
+	t.logger.Printf("Response body: %v\n", body)
 
 	if status < 200 || status > 299 {
 		return fmt.Errorf("Login request resulted in a non-2xx response")
 	}
 
-	c.logger.Println("\nLogin success.")
+	t.logger.Println("\nLogin success.")
 
 	r := strings.NewReader(body)
 	d := xml.NewDecoder(r)
@@ -74,7 +74,7 @@ func (c *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	}
 
 	if params.WithRetry && remainingRetries > 0 {
-		return c.Login(params, remainingRetries-1)
+		return t.Login(params, remainingRetries-1)
 	}
 
 	return nil

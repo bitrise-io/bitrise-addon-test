@@ -34,7 +34,7 @@ func init() {
 
 	changePlanCmd.PersistentFlags().StringVar(&changePlanAppSlug, "app-slug", "", "The slug of the app whose add-on's plan gets changed. It gets randomly generated if not given.")
 	changePlanCmd.PersistentFlags().StringVar(&changePlanPlan, "plan", "free", "The plan the add-on gets changed to.")
-	changePlanCmd.PersistentFlags().BoolVarP(&changePlanWithRetry, "retry", "r", false, "Retry changing plan to test idempotency")
+	changePlanCmd.PersistentFlags().BoolVarP(&changePlanWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
 }
 
 func changePlan() error {

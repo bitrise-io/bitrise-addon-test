@@ -15,7 +15,7 @@ type ComprehensiveTesterParams struct {
 }
 
 // Comprehensive ...
-func (c *Tester) Comprehensive(params ComprehensiveTesterParams) error {
+func (t *Tester) Comprehensive(params ComprehensiveTesterParams) error {
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
 	}
@@ -23,38 +23,38 @@ func (c *Tester) Comprehensive(params ComprehensiveTesterParams) error {
 		params.APIToken, _ = utils.RandomHex(8)
 	}
 
-	c.logger.Printf("\nDeprovisioning details:")
-	c.logger.Printf("App slug: %s", params.AppSlug)
-	c.logger.Printf("Build slug: %s", params.BuildSlug)
-	c.logger.Printf("API token: %s", params.APIToken)
-	c.logger.Printf("Initial plan: %s", params.InitialPlan)
-	c.logger.Printf("Plan change to: %s", params.PlanChangeTo)
-	c.logger.Printf("Timestamp for SSO: %d", params.Timestamp)
+	t.logger.Printf("\nDeprovisioning details:")
+	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("Build slug: %s", params.BuildSlug)
+	t.logger.Printf("API token: %s", params.APIToken)
+	t.logger.Printf("Initial plan: %s", params.InitialPlan)
+	t.logger.Printf("Plan change to: %s", params.PlanChangeTo)
+	t.logger.Printf("Timestamp for SSO: %d", params.Timestamp)
 
-	c.Provision(ProvisionTesterParams{
+	t.Provision(ProvisionTesterParams{
 		AppSlug:   params.AppSlug,
 		APIToken:  params.APIToken,
 		Plan:      params.InitialPlan,
 		WithRetry: true,
 	}, numberOfTestsWithRetry)
 
-	c.ChangePlan(ChangePlanTesterParams{
+	t.ChangePlan(ChangePlanTesterParams{
 		AppSlug: params.AppSlug,
 		Plan:    params.PlanChangeTo,
 	}, 0)
 
-	c.Login(LoginTesterParams{
+	t.Login(LoginTesterParams{
 		AppSlug:   params.AppSlug,
 		BuildSlug: params.BuildSlug,
 		Timestamp: params.Timestamp,
 	}, 0)
 
-	c.Deprovision(DeprovisionTesterParams{
+	t.Deprovision(DeprovisionTesterParams{
 		AppSlug:   params.AppSlug,
 		WithRetry: true,
 	}, 3)
 
-	c.logger.Println("\nComprehensive test success.")
+	t.logger.Println("\nComprehensive test success.")
 
 	return nil
 }

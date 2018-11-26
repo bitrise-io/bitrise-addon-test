@@ -26,7 +26,7 @@ type provisionResp struct {
 }
 
 // Provision ...
-func (c *Tester) Provision(params ProvisionTesterParams, remainingRetries int) error {
+func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) error {
 
 	if len(params.AppSlug) == 0 {
 		params.AppSlug, _ = utils.RandomHex(8)
@@ -36,16 +36,16 @@ func (c *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 		params.APIToken, _ = utils.RandomHex(8)
 	}
 
-	c.logger.Printf("\nProvisioning details:")
-	c.logger.Printf("App slug: %s", params.AppSlug)
-	c.logger.Printf("API token: %s", params.APIToken)
-	c.logger.Printf("Plan: %s", params.Plan)
-	c.logger.Printf("Should retry: %v", params.WithRetry)
+	t.logger.Printf("\nProvisioning details:")
+	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("API token: %s", params.APIToken)
+	t.logger.Printf("Plan: %s", params.Plan)
+	t.logger.Printf("Should retry: %v", params.WithRetry)
 	if params.WithRetry {
-		c.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
+		t.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
 	}
 
-	status, body, err := c.addonClient.Provision(addonprovisioner.ProvisionRequestParams{
+	status, body, err := t.addonClient.Provision(addonprovisioner.ProvisionRequestParams{
 		AppSlug:  params.AppSlug,
 		APIToken: params.APIToken,
 		Plan:     params.Plan,
@@ -55,8 +55,8 @@ func (c *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 		return fmt.Errorf("Provisioning failed: %s", err)
 	}
 
-	c.logger.Printf("\nResponse status: %d", status)
-	c.logger.Printf("Response body: %v\n", body)
+	t.logger.Printf("\nResponse status: %d", status)
+	t.logger.Printf("Response body: %v\n", body)
 
 	if status < 200 || status > 299 {
 		return fmt.Errorf("Provisioning request resulted in a non-2xx response")
@@ -78,16 +78,16 @@ func (c *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 				return fmt.Errorf("ENV var value is not present: %v", e)
 			}
 
-			c.logger.Printf("ENV var processed succesfully: %s: %s", e.Key, e.Value)
+			t.logger.Printf("ENV var processed succesfully: %s: %s", e.Key, e.Value)
 		}
 	} else {
-		c.logger.Printf("No ENV vars to check in response")
+		t.logger.Printf("No ENV vars to check in response")
 	}
 
-	c.logger.Println("\nProvisioning success.")
+	t.logger.Println("\nProvisioning success.")
 
 	if params.WithRetry && remainingRetries > 0 {
-		return c.Provision(params, remainingRetries-1)
+		return t.Provision(params, remainingRetries-1)
 	}
 
 	return nil

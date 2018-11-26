@@ -15,24 +15,24 @@ type testAddonClient struct {
 	err                error
 }
 
-func (p testAddonClient) AddonURL() string {
-	return p.addonURL
+func (c testAddonClient) AddonURL() string {
+	return c.addonURL
 }
-func (p testAddonClient) AuthToken() string {
-	return p.authToken
+func (c testAddonClient) AuthToken() string {
+	return c.authToken
 }
-func (p testAddonClient) SSOSecret() string {
-	return p.ssoSecret
+func (c testAddonClient) SSOSecret() string {
+	return c.ssoSecret
 }
-func (p testAddonClient) Provision(params addonprovisioner.ProvisionRequestParams) (int, string, error) {
-	return p.responseStatusCode, p.responseBody, p.err
+func (c testAddonClient) Provision(params addonprovisioner.ProvisionRequestParams) (int, string, error) {
+	return c.responseStatusCode, c.responseBody, c.err
 }
-func (p testAddonClient) Deprovision(appSlug string) (int, string, error) {
-	return p.responseStatusCode, p.responseBody, p.err
+func (c testAddonClient) Deprovision(appSlug string) (int, string, error) {
+	return c.responseStatusCode, c.responseBody, c.err
 }
-func (p testAddonClient) ChangePlan(params addonprovisioner.ChangePlanRequestParams, appSlug string) (int, string, error) {
-	return p.responseStatusCode, p.responseBody, p.err
+func (c testAddonClient) ChangePlan(params addonprovisioner.ChangePlanRequestParams, appSlug string) (int, string, error) {
+	return c.responseStatusCode, c.responseBody, c.err
 }
-func (p testAddonClient) Login(params addonprovisioner.LoginRequestParams) (int, string, error) {
-	return p.responseStatusCode, p.responseBody, p.err
+func (c testAddonClient) Login(params addonprovisioner.LoginRequestParams) (int, string, error) {
+	return c.responseStatusCode, c.responseBody, c.err
 }

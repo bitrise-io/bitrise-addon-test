@@ -32,7 +32,7 @@ func init() {
 	rootCmd.AddCommand(deprovisionCmd)
 
 	deprovisionCmd.PersistentFlags().StringVar(&deprovisionAppSlug, "app-slug", "", "The slug of the app the add-on gets deprovisioned to. It gets randomly generated if not given.")
-	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry deprovisioning  to test idempotency")
+	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
 }
 
 func deprovision() error {
