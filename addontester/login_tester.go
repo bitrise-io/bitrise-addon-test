@@ -17,7 +17,6 @@ type LoginTesterParams struct {
 	AppSlug   string
 	BuildSlug string
 	Timestamp int64
-	WithRetry bool
 }
 
 // Login ...
@@ -38,10 +37,6 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	t.logger.Printf("App slug: %s", params.AppSlug)
 	t.logger.Printf("Build slug: %s", params.BuildSlug)
 	t.logger.Printf("Timestamp: %d", params.Timestamp)
-	t.logger.Printf("Should retry: %v", params.WithRetry)
-	if params.WithRetry {
-		t.logger.Printf("No. of test: %d.", numberOfTestsWithRetry-remainingRetries)
-	}
 
 	status, body, err := t.addonClient.Login(addonprovisioner.LoginRequestParams{
 		AppSlug:   params.AppSlug,
@@ -71,10 +66,6 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 
 	if err != nil {
 		return fmt.Errorf("Login request responded with invalid HTML")
-	}
-
-	if params.WithRetry && remainingRetries > 0 {
-		return t.Login(params, remainingRetries-1)
 	}
 
 	return nil

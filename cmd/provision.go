@@ -15,13 +15,10 @@ var (
 
 var provisionCmd = &cobra.Command{
 	Use:   "provision",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Test for deprovision request",
+	Long: `Test whether the developed addon is capable of handling the plan change request.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The test sends a POST request to the addon's /provision endpoint and waits for a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := provision()
 		if err != nil {

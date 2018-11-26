@@ -10,18 +10,14 @@ var (
 	loginAppSlug   string
 	loginBuildSlug string
 	loginTimestamp int64
-	loginWithRetry bool
 )
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Test for SSO login request",
+	Long: `Test whether the developed addon is capable of handling the SSO login request.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The test sends a POST request to the addon's /login endpoint with an URL encoded form body. Expects an HTML response with 200 code.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := login()
 		if err != nil {
@@ -36,7 +32,6 @@ func init() {
 	loginCmd.PersistentFlags().StringVar(&loginAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
 	loginCmd.PersistentFlags().StringVar(&loginBuildSlug, "build-slug", "", "The slug of the build")
 	loginCmd.PersistentFlags().Int64Var(&loginTimestamp, "timestamp", 0, "The slug of the build")
-	loginCmd.PersistentFlags().BoolVarP(&loginWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
 }
 
 func login() error {
@@ -49,6 +44,5 @@ func login() error {
 		AppSlug:   loginAppSlug,
 		BuildSlug: loginBuildSlug,
 		Timestamp: loginTimestamp,
-		WithRetry: loginWithRetry,
 	}, numberOfRetries)
 }
