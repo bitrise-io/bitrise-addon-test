@@ -17,7 +17,7 @@ var changePlanCmd = &cobra.Command{
 	Short: "Test for plan change request",
 	Long: `Test whether the developed addon is capable of handling the plan change request.
 
-The test sends a PUT request to the addon's /provision/{app_slug} endpoint and waits for a success response.`,
+The test sends a PUT request to the addon's /provision/{app_slug} endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := changePlan()
 		if err != nil {
