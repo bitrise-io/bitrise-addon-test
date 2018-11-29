@@ -40,7 +40,7 @@ var rootCmd = &cobra.Command{
 	Short: "Testing application for Bitrise Add-on Developers",
 	Long: `Application for testing add-ons written for Bitrise.
 
-Running the root command it will make a comprehensive testing, which consists of testing provisioning request (with 2 times retry), change plan request, login request and deprovisioning request (with 2 times retry).`,
+Running this root command (bitrise-addon-test) will make a comprehensive testing, which consists of testing provisioning request (with 2 retries), change plan request, login request and deprovisioning request (with 2 retries). You can run these tests separately, please find the available commands below.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := comprehensive()
 		if err != nil {
