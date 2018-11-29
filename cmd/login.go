@@ -31,7 +31,7 @@ func init() {
 
 	loginCmd.PersistentFlags().StringVar(&loginAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
 	loginCmd.PersistentFlags().StringVar(&loginBuildSlug, "build-slug", "", "The slug of the build")
-	loginCmd.PersistentFlags().Int64Var(&loginTimestamp, "timestamp", 0, "The slug of the build")
+	loginCmd.PersistentFlags().Int64Var(&loginTimestamp, "timestamp", 0, "Timestamp for SSO login token generation")
 }
 
 func login() error {

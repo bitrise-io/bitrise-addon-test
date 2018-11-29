@@ -67,7 +67,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&rootAPIToken, "api-token", "", "An API token of the app the add-on gets provisioned to. The add-on can behave on behalf of the app using the Bitrise API. It gets randomly generated if not given.")
 	rootCmd.PersistentFlags().StringVar(&rootInitialPlan, "plan", "free", "The plan of the provisioned add-on.")
 	rootCmd.PersistentFlags().StringVar(&rootPlanChangeTo, "plan-change-to", "pro", "The plan the add-on gets changed to.")
-	rootCmd.PersistentFlags().Int64Var(&rootTimestamp, "timestamp", 0, "The slug of the build")
+	rootCmd.PersistentFlags().Int64Var(&rootTimestamp, "timestamp", 0, "Timestamp for SSO login token generation")
 }
 
 // initConfig reads in config file and ENV variables if set.
