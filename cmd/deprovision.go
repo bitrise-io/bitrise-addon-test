@@ -16,7 +16,7 @@ var deprovisionCmd = &cobra.Command{
 	Short: "Test for deprovision request",
 	Long: `Test whether the developed addon is capable of handling the deprovisioning request.
 
-The test sends a DELETE request to the addon's /provision/{app_slug} endpoint and waits for a success response.`,
+The test sends a DELETE request to the addon's /provision/{app_slug} endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := deprovision()
 		if err != nil {
