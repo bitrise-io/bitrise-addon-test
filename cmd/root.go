@@ -37,8 +37,8 @@ func fail(err error) {
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "bitrise-addon-test",
-	Short: "Testing application for Bitrise Addon Developers",
-	Long: `Application for testing addons written for Bitrise.
+	Short: "Testing application for Bitrise Add-on Developers",
+	Long: `Application for testing add-ons written for Bitrise.
 
 Running the root command it will make a comprehensive testing, which consists of testing provisioning request (with 2 times retry), change plan request, login request and deprovisioning request (with 2 times retry).`,
 	Run: func(cmd *cobra.Command, args []string) {

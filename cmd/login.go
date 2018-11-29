@@ -15,9 +15,9 @@ var (
 var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "Test for SSO login request",
-	Long: `Test whether the developed addon is capable of handling the SSO login request.
+	Long: `Test whether the developed add-on is capable of handling the SSO login request.
 
-The test sends a POST request to the addon's /login endpoint with an URL encoded form body. Expects an HTML response with 200 code.`,
+The test sends a POST request to the add-on's /login endpoint with an URL encoded form body. Expects an HTML response with 200 code.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := login()
 		if err != nil {
