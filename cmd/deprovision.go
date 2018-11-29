@@ -16,7 +16,7 @@ var deprovisionCmd = &cobra.Command{
 	Short: "Test for deprovision request",
 	Long: `Test whether the developed add-on is capable of handling the deprovisioning request.
 
-The test sends a DELETE request to the add-on's /provision/{app_slug} endpoint and waits for a success response.`,
+The test sends a DELETE request to the add-on's /provision/{app_slug} endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := deprovision()
 		if err != nil {
@@ -29,7 +29,7 @@ func init() {
 	rootCmd.AddCommand(deprovisionCmd)
 
 	deprovisionCmd.PersistentFlags().StringVar(&deprovisionAppSlug, "app-slug", "", "The slug of the app the add-on gets deprovisioned to. It gets randomly generated if not given.")
-	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
+	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry deprovisioning to test idempotency.")
 }
 
 func deprovision() error {
