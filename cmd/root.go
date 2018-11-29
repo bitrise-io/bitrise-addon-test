@@ -12,12 +12,21 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
-
 const (
 	colorRed        = "\x1b[31;1m"
 	colorNeutral    = "\x1b[0m"
 	numberOfRetries = 2
+)
+
+var (
+	cfgFile string
+	//
+	rootAppSlug      string
+	rootBuildSlug    string
+	rootAPIToken     string
+	rootInitialPlan  string
+	rootPlanChangeTo string
+	rootTimestamp    int64
 )
 
 func fail(err error) {
@@ -27,17 +36,17 @@ func fail(err error) {
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "bitrise-add-on-testing-kit",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:   "bitrise-addon-test",
+	Short: "Testing application for Bitrise Add-on Developers",
+	Long: `Application for testing add-ons written for Bitrise.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	Run: func(cmd *cobra.Command, args []string) {},
+Running this root command (bitrise-addon-test) will make a comprehensive testing, which consists of testing provisioning request (with 2 retries), change plan request, login request and deprovisioning request (with 2 retries). You can run these tests separately, please find the available commands below.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		err := comprehensive()
+		if err != nil {
+			fail(err)
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -52,13 +61,13 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file to use (default is ./config.yaml)")
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().StringVar(&rootAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
+	rootCmd.PersistentFlags().StringVar(&rootBuildSlug, "build-slug", "", "The slug of the build")
+	rootCmd.PersistentFlags().StringVar(&rootAPIToken, "api-token", "", "An API token of the app the add-on gets provisioned to. The add-on can behave on behalf of the app using the Bitrise API. It gets randomly generated if not given.")
+	rootCmd.PersistentFlags().StringVar(&rootInitialPlan, "plan", "free", "The plan of the provisioned add-on.")
+	rootCmd.PersistentFlags().StringVar(&rootPlanChangeTo, "plan-change-to", "pro", "The plan the add-on gets changed to.")
+	rootCmd.PersistentFlags().Int64Var(&rootTimestamp, "timestamp", 0, "Timestamp for SSO login token generation")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -72,14 +81,14 @@ func initConfig() {
 		viper.SetConfigName("config")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Reading config file:", viper.ConfigFileUsed())
+	} else {
+		fmt.Printf("Failed to read config file: %s", err.Error())
+		os.Exit(1)
 	}
 
-	// TODO: error if config file not found
 	validateConfig()
 }
 
@@ -107,4 +116,20 @@ func addonTesterFromConfig() (*addontester.Tester, error) {
 	}
 
 	return addontester.New(addonClient, log.New(os.Stdout, "", 0))
+}
+
+func comprehensive() error {
+	tester, err := addonTesterFromConfig()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	return tester.Comprehensive(addontester.ComprehensiveTesterParams{
+		AppSlug:      rootAppSlug,
+		BuildSlug:    rootBuildSlug,
+		APIToken:     rootAPIToken,
+		InitialPlan:  rootInitialPlan,
+		PlanChangeTo: rootPlanChangeTo,
+		Timestamp:    rootTimestamp,
+	})
 }

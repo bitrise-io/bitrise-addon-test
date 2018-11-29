@@ -13,13 +13,10 @@ var (
 
 var deprovisionCmd = &cobra.Command{
 	Use:   "deprovision",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Test for deprovision request",
+	Long: `Test whether the developed add-on is capable of handling the deprovisioning request.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The test sends a DELETE request to the add-on's /provision/{app_slug} endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := deprovision()
 		if err != nil {
@@ -32,7 +29,7 @@ func init() {
 	rootCmd.AddCommand(deprovisionCmd)
 
 	deprovisionCmd.PersistentFlags().StringVar(&deprovisionAppSlug, "app-slug", "", "The slug of the app the add-on gets deprovisioned to. It gets randomly generated if not given.")
-	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry deprovisioning  to test idempotency")
+	deprovisionCmd.PersistentFlags().BoolVarP(&deprovisionWithRetry, "retry", "r", false, "Retry deprovisioning to test idempotency.")
 }
 
 func deprovision() error {

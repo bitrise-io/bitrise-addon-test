@@ -15,13 +15,10 @@ var (
 
 var provisionCmd = &cobra.Command{
 	Use:   "provision",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Test for deprovision request",
+	Long: `Test whether the developed add-on is capable of handling the plan change request.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The test sends a POST request to the add-on's /provision endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := provision()
 		if err != nil {
@@ -36,7 +33,7 @@ func init() {
 	provisionCmd.PersistentFlags().StringVar(&provisionAppSlug, "app-slug", "", "The slug of the app the add-on gets provisioned to. It gets randomly generated if not given.")
 	provisionCmd.PersistentFlags().StringVar(&provisionAPIToken, "api-token", "", "An API token of the app the add-on gets provisioned to. The add-on can behave on behalf of the app using the Bitrise API. It gets randomly generated if not given.")
 	provisionCmd.PersistentFlags().StringVar(&provisionPlan, "plan", "free", "The plan of the provisioned add-on.")
-	provisionCmd.PersistentFlags().BoolVarP(&provisionWithRetry, "retry", "r", false, "Retry provisioning  to test idempotency")
+	provisionCmd.PersistentFlags().BoolVarP(&provisionWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
 }
 
 func provision() error {

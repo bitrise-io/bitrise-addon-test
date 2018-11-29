@@ -14,13 +14,10 @@ var (
 
 var changePlanCmd = &cobra.Command{
 	Use:   "change-plan",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Test for plan change request",
+	Long: `Test whether the developed add-on is capable of handling the plan change request.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The test sends a PUT request to the add-on's /provision/{app_slug} endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := changePlan()
 		if err != nil {
@@ -34,7 +31,7 @@ func init() {
 
 	changePlanCmd.PersistentFlags().StringVar(&changePlanAppSlug, "app-slug", "", "The slug of the app whose add-on's plan gets changed. It gets randomly generated if not given.")
 	changePlanCmd.PersistentFlags().StringVar(&changePlanPlan, "plan", "free", "The plan the add-on gets changed to.")
-	changePlanCmd.PersistentFlags().BoolVarP(&changePlanWithRetry, "retry", "r", false, "Retry changing plan to test idempotency")
+	changePlanCmd.PersistentFlags().BoolVarP(&changePlanWithRetry, "retry", "r", false, "Retry provisioning to test idempotency.")
 }
 
 func changePlan() error {

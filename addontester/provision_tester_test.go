@@ -11,12 +11,12 @@ func Test_Provision(t *testing.T) {
 	for _, tc := range []TesterTestCase{
 		{
 			responseStatusCode: http.StatusOK,
-			responseBody:       `{"envs":[{"key":"key1","value":"value1"}]}`,
+			responseBody:       `{"envs":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}`,
 			testCaseID:         "ok",
 		},
 		{
 			responseStatusCode: http.StatusOK,
-			responseBody:       `{"envs":[{"key":"key1","value":"value1"}]}`,
+			responseBody:       `{"envs":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}`,
 			testCaseID:         "ok_with_retry",
 			testWithRetry:      true,
 		},
