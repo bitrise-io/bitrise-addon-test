@@ -18,7 +18,7 @@ var provisionCmd = &cobra.Command{
 	Short: "Test for deprovision request",
 	Long: `Test whether the developed addon is capable of handling the plan change request.
 
-The test sends a POST request to the addon's /provision endpoint and waits for a success response.`,
+The test sends a POST request to the addon's /provision endpoint and expects a success response.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := provision()
 		if err != nil {
