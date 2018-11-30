@@ -1,5 +1,6 @@
-format_version: 5
+format_version: "5"
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ""
 
 app:
   envs:
@@ -7,8 +8,21 @@ app:
   - BIN_NAME: bitrise-plugins-io
 
 workflows:
+  create-binary:
+    steps:
+    - script:
+        title: Create binary
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            go build -o ./_bin/addon-testing-kit
   go-test:
     steps:
+    - change-workdir@1.0.1:
+        inputs:
+        - path: $GOPATH/src/github.com/bitrise-team/bitrise-addon-test
     - script:
         title: Export go files to test
         inputs:
@@ -48,13 +62,11 @@ workflows:
             #!/usr/bin/env bash
             set -ex
             go test $(go list ./... | grep -v vendor)
-  create-binary:
+  release:
     steps:
-    - script:
-        title: Create binary
+    - trigger-bitrise-workflow@0.0.4:
         inputs:
-        - content: |-
-            #!/bin/bash
-            set -ex
-
-            go build -o ./_bin/addon-testing-kit
+        - api_token: "$CONTROL_CENTER_TRIGGER_KEY"
+        - workflow_id: tool-release-v2
+        - exported_environment_variable_names: GIT_REPOSITORY_URL|TARGET_OS|PACKAGE_NAME|BIN_NAME|LD_FLAGS
+        - app_slug: "$CONTROL_CENTER_APP_SLUG"

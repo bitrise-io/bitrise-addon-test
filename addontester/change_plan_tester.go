@@ -17,7 +17,11 @@ type ChangePlanTesterParams struct {
 // ChangePlan ...
 func (t *Tester) ChangePlan(params ChangePlanTesterParams, remainingRetries int) error {
 	if len(params.AppSlug) == 0 {
-		params.AppSlug, _ = utils.RandomHex(8)
+		var err error
+		params.AppSlug, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate app slug: %s", err)
+		}
 	}
 
 	t.logger.Printf("\nPlan changing details:")

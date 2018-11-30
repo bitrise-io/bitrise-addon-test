@@ -1,3 +1,4 @@
 config.yml
 .gows.user.yml
 _bin/*
+.bitrise.secrets.yml
