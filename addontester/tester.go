@@ -3,7 +3,7 @@ package addontester
 import (
 	"log"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
+	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
 )
 
 const numberOfTestsWithRetry = 3

@@ -3,7 +3,7 @@ package addontester
 import (
 	"fmt"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 )
 
 // DeprovisionTesterParams ...

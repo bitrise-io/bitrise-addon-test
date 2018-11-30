@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
+	"github.com/bitrise-team/bitrise-addon-test/addontester"
 )
 
 func Test_Login(t *testing.T) {
@@ -13,13 +13,6 @@ func Test_Login(t *testing.T) {
 			responseStatusCode: http.StatusOK,
 			responseBody:       "<html><body><p>Hello Bitrise!</p></body></html>",
 			testCaseID:         "ok",
-			testTimestamp:      1542292740,
-		},
-		{
-			responseStatusCode: http.StatusOK,
-			responseBody:       "<html><body><p>Hello Bitrise!</p></body></html>",
-			testCaseID:         "ok_with_retry",
-			testWithRetry:      true,
 			testTimestamp:      1542292740,
 		},
 		{
@@ -42,7 +35,6 @@ func Test_Login(t *testing.T) {
 				AppSlug:   "app-slug",
 				BuildSlug: "build-slug",
 				Timestamp: tc.testTimestamp,
-				WithRetry: tc.testWithRetry,
 			}, numberOfRetryTests)
 		}
 		performTesterTest(t, tc)

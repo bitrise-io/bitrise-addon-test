@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/bitrise-io/go-utils/log"
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 	"github.com/pkg/errors"
 )
 
