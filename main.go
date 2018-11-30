@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bitrise-team/bitrise-addon-test/cmd"
+	"github.com/bitrise-io/bitrise-addon-test/cmd"
 )
 
 func main() {

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/bitrise-team/bitrise-addon-test/addontester"
+	"github.com/bitrise-io/bitrise-addon-test/addontester"
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,7 +1,7 @@
 package addontester_test
 
 import (
-	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
+	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
 )
 
 const numberOfRetryTests = 2

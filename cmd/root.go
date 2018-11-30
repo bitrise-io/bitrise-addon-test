@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
-	"github.com/bitrise-team/bitrise-addon-test/addontester"
+	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
+	"github.com/bitrise-io/bitrise-addon-test/addontester"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

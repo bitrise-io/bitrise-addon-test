@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/bitrise-team/bitrise-addon-test/addontester"
+	"github.com/bitrise-io/bitrise-addon-test/addontester"
 )
 
 func Test_Provision(t *testing.T) {
