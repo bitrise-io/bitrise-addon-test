@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
+	"github.com/bitrise-team/bitrise-addon-test/addontester"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +33,7 @@ func performTesterTest(t *testing.T, tc TesterTestCase) {
 		if tc.requestError != "" {
 			requestError = errors.New(tc.requestError)
 		}
-		tester, _ := addontester.New(
+		tester, err := addontester.New(
 			&testAddonClient{
 				addonURL:           "http://example.com",
 				authToken:          "auth-token",
@@ -44,12 +44,13 @@ func performTesterTest(t *testing.T, tc TesterTestCase) {
 			},
 			log.New(&buf, "", 0),
 		)
+		require.NoError(t, err)
 
 		if tc.testerMethodToCall == nil {
 			panic("Specify a func to test")
 		}
 
-		err := tc.testerMethodToCall(tester)
+		err = tc.testerMethodToCall(tester)
 
 		if tc.expectedError == "" {
 			require.NoError(t, err)

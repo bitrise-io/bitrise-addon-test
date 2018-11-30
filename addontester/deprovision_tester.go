@@ -3,7 +3,7 @@ package addontester
 import (
 	"fmt"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 )
 
 // DeprovisionTesterParams ...
@@ -15,7 +15,11 @@ type DeprovisionTesterParams struct {
 // Deprovision ...
 func (t *Tester) Deprovision(params DeprovisionTesterParams, remainingRetries int) error {
 	if len(params.AppSlug) == 0 {
-		params.AppSlug, _ = utils.RandomHex(8)
+		var err error
+		params.AppSlug, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate app slug: %s", err)
+		}
 	}
 
 	t.logger.Printf("\nDeprovisioning details:")

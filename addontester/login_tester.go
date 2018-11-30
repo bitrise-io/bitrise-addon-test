@@ -8,8 +8,8 @@ import (
 
 	"golang.org/x/net/html"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 )
 
 // LoginTesterParams ...
@@ -22,11 +22,19 @@ type LoginTesterParams struct {
 // Login ...
 func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	if len(params.AppSlug) == 0 {
-		params.AppSlug, _ = utils.RandomHex(8)
+		var err error
+		params.AppSlug, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate app slug: %s", err)
+		}
 	}
 
 	if len(params.BuildSlug) == 0 {
-		params.BuildSlug, _ = utils.RandomHex(8)
+		var err error
+		params.BuildSlug, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate build slug: %s", err)
+		}
 	}
 
 	if params.Timestamp == 0 {

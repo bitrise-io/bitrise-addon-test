@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/bitrise-io/go-utils/log"
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 	"github.com/moul/http2curl"
 	"github.com/pkg/errors"
 )

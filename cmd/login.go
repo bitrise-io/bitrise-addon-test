@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addontester"
+	"github.com/bitrise-team/bitrise-addon-test/addontester"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

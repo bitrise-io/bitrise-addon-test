@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/addonprovisioner"
-	"github.com/bitrise-team/bitrise-add-on-testing-kit/utils"
+	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
+	"github.com/bitrise-team/bitrise-addon-test/utils"
 )
 
 // ProvisionTesterParams ...
@@ -29,11 +29,19 @@ type provisionResp struct {
 func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) error {
 
 	if len(params.AppSlug) == 0 {
-		params.AppSlug, _ = utils.RandomHex(8)
+		var err error
+		params.AppSlug, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate app slug: %s", err)
+		}
 	}
 
 	if len(params.APIToken) == 0 {
-		params.APIToken, _ = utils.RandomHex(8)
+		var err error
+		params.APIToken, err = utils.RandomHex(8)
+		if err != nil {
+			return fmt.Errorf("Failed to generate api token: %s", err)
+		}
 	}
 
 	t.logger.Printf("\nProvisioning details:")
