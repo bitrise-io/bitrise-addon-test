@@ -3,8 +3,8 @@ package addontester
 import (
 	"fmt"
 
-	"github.com/bitrise-team/bitrise-addon-test/addonprovisioner"
-	"github.com/bitrise-team/bitrise-addon-test/utils"
+	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
+	"github.com/bitrise-io/bitrise-addon-test/utils"
 )
 
 // ChangePlanTesterParams ...

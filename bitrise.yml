@@ -22,7 +22,7 @@ workflows:
     steps:
     - change-workdir@1.0.1:
         inputs:
-        - path: $GOPATH/src/github.com/bitrise-team/bitrise-addon-test
+        - path: $GOPATH/src/github.com/bitrise-io/bitrise-addon-test
     - script:
         title: Export go files to test
         inputs:

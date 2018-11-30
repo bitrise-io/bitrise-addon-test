@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/bitrise-io/bitrise-addon-test/utils"
 	"github.com/bitrise-io/go-utils/log"
-	"github.com/bitrise-team/bitrise-addon-test/utils"
 	"github.com/moul/http2curl"
 	"github.com/pkg/errors"
 )
