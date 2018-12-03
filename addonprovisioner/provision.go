@@ -12,6 +12,7 @@ import (
 // ProvisionRequestParams ...
 type ProvisionRequestParams struct {
 	AppSlug  string `json:"app_slug"`
+	AppTitle string `json:"app_title"`
 	APIToken string `json:"api_token"`
 	Plan     string `json:"plan"`
 }

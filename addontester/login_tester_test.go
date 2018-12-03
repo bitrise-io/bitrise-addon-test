@@ -33,6 +33,7 @@ func Test_Login(t *testing.T) {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
 			return tester.Login(addontester.LoginTesterParams{
 				AppSlug:   "app-slug",
+				AppTitle:  "Title of the app",
 				BuildSlug: "build-slug",
 				Timestamp: tc.testTimestamp,
 			}, numberOfRetryTests)

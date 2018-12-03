@@ -15,6 +15,7 @@ import (
 // LoginTesterParams ...
 type LoginTesterParams struct {
 	AppSlug   string
+	AppTitle  string
 	BuildSlug string
 	Timestamp int64
 }
@@ -27,6 +28,10 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 		if err != nil {
 			return fmt.Errorf("Failed to generate app slug: %s", err)
 		}
+	}
+
+	if len(params.AppTitle) == 0 {
+		params.AppTitle = fmt.Sprintf("Title of app #%s", params.AppSlug)
 	}
 
 	if len(params.BuildSlug) == 0 {
@@ -43,11 +48,13 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 
 	t.logger.Printf("\nLogin details:")
 	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("App title: %s", params.AppTitle)
 	t.logger.Printf("Build slug: %s", params.BuildSlug)
 	t.logger.Printf("Timestamp: %d", params.Timestamp)
 
 	status, body, err := t.addonClient.Login(addonprovisioner.LoginRequestParams{
 		AppSlug:   params.AppSlug,
+		AppTitle:  params.AppTitle,
 		BuildSlug: params.BuildSlug,
 		Timestamp: fmt.Sprintf("%d", params.Timestamp),
 	})

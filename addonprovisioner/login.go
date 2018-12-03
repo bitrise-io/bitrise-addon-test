@@ -18,6 +18,7 @@ import (
 // LoginRequestParams ...
 type LoginRequestParams struct {
 	AppSlug   string `json:"app_slug"`
+	AppTitle  string `json:"app_title"`
 	BuildSlug string `json:"build_slug"`
 	Timestamp string `json:"timestamp"`
 }
@@ -37,7 +38,11 @@ func (c *Client) Login(params LoginRequestParams) (int, string, error) {
 		"token":     {refToken},
 		"timestamp": {params.Timestamp},
 	}.Encode())
-	req, err := http.NewRequest("POST", c.addonURL+fmt.Sprintf("/login?build_slug=%s", params.BuildSlug), formData)
+
+	v := url.Values{}
+	v.Set("build_slug", params.BuildSlug)
+	v.Set("app_title", params.AppTitle)
+	req, err := http.NewRequest("POST", c.addonURL+"/login?"+v.Encode(), formData)
 	if err != nil {
 		return 0, "", errors.Wrap(err, "Failed to submit form")
 	}
@@ -52,6 +57,9 @@ func (c *Client) Login(params LoginRequestParams) (int, string, error) {
 	fmt.Println("\nMaking request:")
 	fmt.Println(command)
 	resp, err := c.client.Do(req)
+	if err != nil {
+		return 0, "", errors.Wrap(err, "Failed to send request")
+	}
 
 	defer utils.ResponseBodyCloseWithErrorLog(resp)
 	bodyBytes, err := ioutil.ReadAll(resp.Body)

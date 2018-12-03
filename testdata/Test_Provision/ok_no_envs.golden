@@ -1,6 +1,7 @@
 
 Provisioning details:
 App slug: app-slug
+App title: Title of the app
 API token: api-token
 Plan: plan
 Should retry: false
