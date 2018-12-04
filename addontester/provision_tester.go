@@ -11,6 +11,7 @@ import (
 // ProvisionTesterParams ...
 type ProvisionTesterParams struct {
 	AppSlug   string
+	AppTitle  string
 	APIToken  string
 	Plan      string
 	WithRetry bool
@@ -36,6 +37,10 @@ func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 		}
 	}
 
+	if len(params.AppTitle) == 0 {
+		params.AppTitle = fmt.Sprintf("Title of app #%s", params.AppSlug)
+	}
+
 	if len(params.APIToken) == 0 {
 		var err error
 		params.APIToken, err = utils.RandomHex(8)
@@ -46,6 +51,7 @@ func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 
 	t.logger.Printf("\nProvisioning details:")
 	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("App title: %s", params.AppTitle)
 	t.logger.Printf("API token: %s", params.APIToken)
 	t.logger.Printf("Plan: %s", params.Plan)
 	t.logger.Printf("Should retry: %v", params.WithRetry)
@@ -55,6 +61,7 @@ func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 
 	status, body, err := t.addonClient.Provision(addonprovisioner.ProvisionRequestParams{
 		AppSlug:  params.AppSlug,
+		AppTitle: params.AppTitle,
 		APIToken: params.APIToken,
 		Plan:     params.Plan,
 	})

@@ -48,6 +48,7 @@ func Test_Provision(t *testing.T) {
 		tc.testerMethodToCall = func(tester *addontester.Tester) error {
 			return tester.Provision(addontester.ProvisionTesterParams{
 				AppSlug:   "app-slug",
+				AppTitle:  "Title of the app",
 				APIToken:  "api-token",
 				Plan:      "plan",
 				WithRetry: tc.testWithRetry,
