@@ -1,8 +1,6 @@
 package addontester_test
 
 import (
-	"fmt"
-
 	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
 )
 
@@ -29,7 +27,6 @@ func (c *testAddonClient) SSOSecret() string {
 	return c.ssoSecret
 }
 func (c *testAddonClient) Provision(params addonprovisioner.ProvisionRequestParams) (int, string, error) {
-	fmt.Println(c.numberOfProvisionRequestsCalled)
 	c.numberOfProvisionRequestsCalled = c.numberOfProvisionRequestsCalled + 1
 	if c.numberOfProvisionRequestsCalled == 1 {
 		return c.responseStatusCode, c.responseBody, c.err
