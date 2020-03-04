@@ -3,7 +3,6 @@ package addontester_test
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"path/filepath"
@@ -37,7 +36,6 @@ func performTesterTest(t *testing.T, tc TesterTestCase) {
 			requestError = errors.New(tc.requestError)
 		}
 		if tc.testAddonClient == nil {
-			fmt.Println("something wrong")
 			tc.testAddonClient = &testAddonClient{
 				addonURL:                "http://example.com",
 				authToken:               "auth-token",
