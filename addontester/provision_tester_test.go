@@ -10,28 +10,34 @@ import (
 func Test_Provision(t *testing.T) {
 	for _, tc := range []TesterTestCase{
 		{
-			responseStatusCode: http.StatusOK,
+			responseStatusCode: http.StatusCreated,
 			responseBody:       `{"envs":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}`,
 			testCaseID:         "ok",
 		},
 		{
-			responseStatusCode: http.StatusOK,
-			responseBody:       `{"envs":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}`,
-			testCaseID:         "ok_with_retry",
-			testWithRetry:      true,
+			testAddonClient: &testAddonClient{
+				addonURL:                "http://example.com",
+				authToken:               "auth-token",
+				ssoSecret:               "sso-secret",
+				responseStatusCode:      http.StatusCreated,
+				retryResponseStatusCode: http.StatusOK,
+				responseBody:            `{"envs":[{"key":"key1","value":"value1"},{"key":"key2","value":"value2"}]}`,
+			},
+			testCaseID:    "ok_with_retry",
+			testWithRetry: true,
 		},
 		{
-			responseStatusCode: http.StatusOK,
+			responseStatusCode: http.StatusCreated,
 			responseBody:       `{"envs":[]}`,
 			testCaseID:         "ok_no_envs",
 		},
 		{
-			responseStatusCode: http.StatusOK,
+			responseStatusCode: http.StatusCreated,
 			responseBody:       `{"envs":[{"value":"value1"}]}`,
 			expectedError:      "ENV var key is not present: { value1}",
 		},
 		{
-			responseStatusCode: http.StatusOK,
+			responseStatusCode: http.StatusCreated,
 			responseBody:       `{"envs":[{"key":"key1"}]}`,
 			expectedError:      "ENV var value is not present: {key1 }",
 		},

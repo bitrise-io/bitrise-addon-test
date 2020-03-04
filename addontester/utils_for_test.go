@@ -13,13 +13,15 @@ import (
 )
 
 type TesterTestCase struct {
-	responseStatusCode int
-	responseBody       string
-	requestError       string
-	expectedError      string
-	testCaseID         string
-	testWithRetry      bool
-	testerMethodToCall func(tester *addontester.Tester) error
+	responseStatusCode      int
+	retryResponseStatusCode int
+	responseBody            string
+	requestError            string
+	expectedError           string
+	testCaseID              string
+	testWithRetry           bool
+	testAddonClient         *testAddonClient
+	testerMethodToCall      func(tester *addontester.Tester) error
 
 	//
 	testTimestamp int64
@@ -33,17 +35,18 @@ func performTesterTest(t *testing.T, tc TesterTestCase) {
 		if tc.requestError != "" {
 			requestError = errors.New(tc.requestError)
 		}
-		tester, err := addontester.New(
-			&testAddonClient{
-				addonURL:           "http://example.com",
-				authToken:          "auth-token",
-				ssoSecret:          "sso-secret",
-				responseStatusCode: tc.responseStatusCode,
-				responseBody:       tc.responseBody,
-				err:                requestError,
-			},
-			log.New(&buf, "", 0),
-		)
+		if tc.testAddonClient == nil {
+			tc.testAddonClient = &testAddonClient{
+				addonURL:                "http://example.com",
+				authToken:               "auth-token",
+				ssoSecret:               "sso-secret",
+				responseStatusCode:      tc.responseStatusCode,
+				retryResponseStatusCode: tc.retryResponseStatusCode,
+				responseBody:            tc.responseBody,
+				err:                     requestError,
+			}
+		}
+		tester, err := addontester.New(tc.testAddonClient, log.New(&buf, "", 0))
 		require.NoError(t, err)
 
 		if tc.testerMethodToCall == nil {

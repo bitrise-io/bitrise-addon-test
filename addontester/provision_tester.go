@@ -3,6 +3,7 @@ package addontester
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
 	"github.com/bitrise-io/bitrise-addon-test/utils"
@@ -28,7 +29,6 @@ type provisionResp struct {
 
 // Provision ...
 func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) error {
-
 	if len(params.AppSlug) == 0 {
 		var err error
 		params.AppSlug, err = utils.RandomHex(8)
@@ -75,6 +75,14 @@ func (t *Tester) Provision(params ProvisionTesterParams, remainingRetries int) e
 
 	if status < 200 || status > 299 {
 		return fmt.Errorf("Provisioning request resulted in a non-2xx response")
+	}
+
+	if (numberOfTestsWithRetry-1) == remainingRetries && status != http.StatusCreated {
+		return fmt.Errorf("Provisioning has to respond with created status")
+	}
+
+	if (numberOfTestsWithRetry-1) != remainingRetries && status != http.StatusOK {
+		return fmt.Errorf("Provisioning has to respond with status OK if it's called repeatedly")
 	}
 
 	var pr provisionResp
