@@ -10,6 +10,7 @@ import (
 
 	"github.com/bitrise-io/bitrise-addon-test/addonprovisioner"
 	"github.com/bitrise-io/bitrise-addon-test/utils"
+	"github.com/pkg/errors"
 )
 
 // LoginTesterParams ...
@@ -20,13 +21,12 @@ type LoginTesterParams struct {
 	Timestamp int64
 }
 
-// Login ...
-func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
+func prepareNormalizeLoginTesterParams(params *LoginTesterParams) error {
 	if len(params.AppSlug) == 0 {
 		var err error
 		params.AppSlug, err = utils.RandomHex(8)
 		if err != nil {
-			return fmt.Errorf("Failed to generate app slug: %s", err)
+			return fmt.Errorf("Failed to generate app slug: %+v", err)
 		}
 	}
 
@@ -38,12 +38,21 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 		var err error
 		params.BuildSlug, err = utils.RandomHex(8)
 		if err != nil {
-			return fmt.Errorf("Failed to generate build slug: %s", err)
+			return fmt.Errorf("Failed to generate build slug: %+v", err)
 		}
 	}
 
 	if params.Timestamp == 0 {
 		params.Timestamp = time.Now().Unix()
+	}
+
+	return nil
+}
+
+// Login ...
+func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
+	if err := prepareNormalizeLoginTesterParams(&params); err != nil {
+		return errors.WithStack(err)
 	}
 
 	t.logger.Printf("\nLogin details:")
@@ -60,14 +69,14 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	})
 
 	if err != nil {
-		return fmt.Errorf("Login failed: %s", err)
+		return fmt.Errorf("Login failed: %+v", err)
 	}
 
 	t.logger.Printf("\nResponse status: %d", status)
 	t.logger.Printf("Response body: %v\n", body)
 
 	if status < 200 || status > 299 {
-		return fmt.Errorf("Login request resulted in a non-2xx response")
+		return fmt.Errorf("Login request resulted in a non-2xx response (%d)", status)
 	}
 
 	t.logger.Println("\nLogin success.")
@@ -80,8 +89,29 @@ func (t *Tester) Login(params LoginTesterParams, remainingRetries int) error {
 	err = d.Decode(&nodes)
 
 	if err != nil {
-		return fmt.Errorf("Login request responded with invalid HTML")
+		return fmt.Errorf("Login request responded with invalid HTML: %+v", err)
 	}
 
 	return nil
+}
+
+// LoginRequestInfos ...
+func (t *Tester) LoginRequestInfos(params LoginTesterParams) (addonprovisioner.LoginRequestInfos, error) {
+	if err := prepareNormalizeLoginTesterParams(&params); err != nil {
+		return addonprovisioner.LoginRequestInfos{}, errors.WithStack(err)
+	}
+
+	t.logger.Printf("\nLogin details:")
+	t.logger.Printf("App slug: %s", params.AppSlug)
+	t.logger.Printf("App title: %s", params.AppTitle)
+	t.logger.Printf("Build slug: %s", params.BuildSlug)
+	t.logger.Printf("Timestamp: %d", params.Timestamp)
+
+	lri, err := t.addonClient.LoginRequestInfos(addonprovisioner.LoginRequestParams{
+		AppSlug:   params.AppSlug,
+		AppTitle:  params.AppTitle,
+		BuildSlug: params.BuildSlug,
+		Timestamp: fmt.Sprintf("%d", params.Timestamp),
+	})
+	return lri, errors.WithStack(err)
 }
