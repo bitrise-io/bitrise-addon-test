@@ -23,31 +23,96 @@ type LoginRequestParams struct {
 	Timestamp string `json:"timestamp"`
 }
 
-// Login ...
-func (c *Client) Login(params LoginRequestParams) (int, string, error) {
+// NewLoginRequestParams ...
+func NewLoginRequestParams(appSlug, appTitle, buildSlug, timestamp string) LoginRequestParams {
+	return LoginRequestParams{
+		AppSlug:   appSlug,
+		AppTitle:  appTitle,
+		BuildSlug: buildSlug,
+		Timestamp: timestamp,
+	}
+}
+
+// LoginFormData ..
+type LoginFormData struct {
+	AppSlug   string
+	Token     string
+	Timestamp string
+}
+
+// LoginFormData ...
+func (loginRequestParams LoginRequestParams) LoginFormData(ssoSecret string) (LoginFormData, error) {
 	s := sha1.New()
-	_, err := s.Write([]byte(fmt.Sprintf("%s:%s:%s", params.AppSlug, c.SSOSecret(), params.Timestamp)))
+	_, err := s.Write([]byte(fmt.Sprintf("%s:%s:%s", loginRequestParams.AppSlug, ssoSecret, loginRequestParams.Timestamp)))
 	if err != nil {
 		log.Errorf("Failed to write into sha1 buffer, error: %s", err)
-		return 0, "", errors.Wrap(err, "Failed to submit form")
+		return LoginFormData{}, errors.Wrap(err, "Failed to submit form")
 	}
 	refToken := fmt.Sprintf("%x", s.Sum(nil))
 
-	formData := strings.NewReader(url.Values{
-		"app_slug":  {params.AppSlug},
-		"token":     {refToken},
-		"timestamp": {params.Timestamp},
-	}.Encode())
+	return LoginFormData{
+		AppSlug:   loginRequestParams.AppSlug,
+		Token:     refToken,
+		Timestamp: loginRequestParams.Timestamp,
+	}, nil
+}
+
+// LoginRequestHeaders ...
+type LoginRequestHeaders struct {
+	Authentication string
+	ContentType    string
+}
+
+// LoginRequestInfos ...
+type LoginRequestInfos struct {
+	Method   string
+	URL      string
+	FormData LoginFormData
+	Headers  LoginRequestHeaders
+}
+
+// LoginRequestInfos ...
+func (c *Client) LoginRequestInfos(params LoginRequestParams) (LoginRequestInfos, error) {
+	loginFormData, err := params.LoginFormData(c.SSOSecret())
+	if err != nil {
+		return LoginRequestInfos{}, errors.Wrap(err, "Failed to generate form")
+	}
 
 	v := url.Values{}
 	v.Set("build_slug", params.BuildSlug)
 	v.Set("app_title", params.AppTitle)
-	req, err := http.NewRequest("POST", c.addonURL+"/login?"+v.Encode(), formData)
+
+	return LoginRequestInfos{
+		Method:   "POST",
+		URL:      c.addonURL + "/login?" + v.Encode(),
+		FormData: loginFormData,
+		Headers: LoginRequestHeaders{
+			Authentication: c.authToken,
+			ContentType:    "application/x-www-form-urlencoded",
+		},
+	}, nil
+}
+
+// Login ...
+func (c *Client) Login(params LoginRequestParams) (int, string, error) {
+	loginRequestInfos, err := c.LoginRequestInfos(params)
+
+	formData := strings.NewReader(url.Values{
+		"app_slug":  {loginRequestInfos.FormData.AppSlug},
+		"token":     {loginRequestInfos.FormData.Token},
+		"timestamp": {loginRequestInfos.FormData.Timestamp},
+	}.Encode())
+
+	req, err := http.NewRequest(
+		loginRequestInfos.Method,
+		loginRequestInfos.URL,
+		formData,
+	)
 	if err != nil {
 		return 0, "", errors.Wrap(err, "Failed to submit form")
 	}
-	req.Header.Add("Authentication", c.authToken)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Authentication", loginRequestInfos.Headers.Authentication)
+	req.Header.Set("Content-Type", loginRequestInfos.Headers.ContentType)
 
 	command, err := http2curl.GetCurlCommand(req)
 	if err != nil {

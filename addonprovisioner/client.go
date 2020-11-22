@@ -38,6 +38,7 @@ type AddonClientInterface interface {
 	Deprovision(appSlug string) (int, string, error)
 	ChangePlan(params ChangePlanRequestParams, appSlug string) (int, string, error)
 	Login(params LoginRequestParams) (int, string, error)
+	LoginRequestInfos(params LoginRequestParams) (LoginRequestInfos, error)
 }
 
 func (c *Client) validate() error {
