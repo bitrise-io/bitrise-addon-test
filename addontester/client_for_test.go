@@ -50,10 +50,6 @@ func (c *testAddonClient) Login(params addonprovisioner.LoginRequestParams) (int
 	return c.responseStatusCode, c.responseBody, c.err
 }
 
-func (c *testAddonClient) Login(params addonprovisioner.LoginRequestParams) (int, string, error) {
-	return c.responseStatusCode, c.responseBody, c.err
-}
-
 func (c *testAddonClient) LoginRequestInfos(params addonprovisioner.LoginRequestParams) (addonprovisioner.LoginRequestInfos, error) {
 	return c.loginRequestInfos, c.err
 }
