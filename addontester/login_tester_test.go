@@ -18,12 +18,12 @@ func Test_Login(t *testing.T) {
 		{
 			responseStatusCode: http.StatusInternalServerError,
 			responseBody:       `{"message":"Internal Server Error"}`,
-			expectedError:      "Login request resulted in a non-2xx response",
+			expectedError:      "Login request resulted in a non-2xx response (500)",
 		},
 		{
 			responseStatusCode: http.StatusOK,
 			responseBody:       `definately not an HTML`,
-			expectedError:      "Login request responded with invalid HTML",
+			expectedError:      "Login request responded with invalid HTML: EOF",
 		},
 		{
 			requestError:  "Some HTTP request issue",
